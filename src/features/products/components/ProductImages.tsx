@@ -19,8 +19,8 @@ export function ProductImages({ product }: ProductImagesProps) {
   }
 
   return (
-    <div className="space-y-3">
-      <div className="relative aspect-[0.92] overflow-hidden bg-[#ebe1d1] sm:aspect-square">
+    <div className="space-y-0 border-2 border-[#168b55]">
+      <div className="relative aspect-[1.02] overflow-hidden bg-[#ebe1d1] sm:aspect-[1.02]">
         <Image
           src={selectedImage}
           alt={product.name}
@@ -30,13 +30,16 @@ export function ProductImages({ product }: ProductImagesProps) {
           priority
         />
       </div>
-      <div className="flex gap-3 overflow-x-auto">
-        {product.images.map((image) => (
+      <div className="grid grid-cols-3 gap-1 bg-[#faf8f5]">
+        {Array.from(
+          { length: 3 },
+          (_, index) => product.images[index % product.images.length],
+        ).map((image, index) => (
           <button
             type="button"
-            key={image}
+            key={`${image}-${index}`}
             onClick={() => setSelectedImage(image)}
-            className={`relative h-20 w-20 shrink-0 overflow-hidden bg-[#ebe1d1] ${
+            className={`relative h-20 overflow-hidden bg-[#ebe1d1] ${
               selectedImage === image ? "ring-1 ring-[#1a1a1a]" : ""
             }`}
             aria-label={`View ${product.name}`}

@@ -23,7 +23,9 @@ export const mockProducts: Product[] = [
     category: "pure-extractions",
     scentFamily: "woody",
     occasion: "personal-use",
-    options: [],
+    options: [
+      { id: "size", name: "Size", values: ["30 ml", "50 ml", "100 ml"] },
+    ],
   },
   {
     id: "noir-cocoon",
