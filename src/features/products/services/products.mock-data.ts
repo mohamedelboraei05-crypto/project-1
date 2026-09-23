@@ -19,12 +19,25 @@ export const mockProducts: Product[] = [
     description: "Warm sandalwood layered with cardamom.",
     notes: "Woody / Sandalwood & Cardamom",
     price: 220,
-    images: ["/images/products/santal-parchment.png"],
+    images: [
+      "/images/products/Santal Parchment/santal-parchment.png",
+      "/images/products/Santal Parchment/thumb-0.png",
+      "/images/products/Santal Parchment/thumb-1.png",
+      "/images/products/Santal Parchment/thumb-2.png",
+    ],
     category: "pure-extractions",
     scentFamily: "woody",
     occasion: "personal-use",
     options: [
-      { id: "size", name: "Size", values: ["30 ml", "50 ml", "100 ml"] },
+      {
+        id: "size",
+        name: "Volume",
+        values: [
+          { value: "30 ml", price: 140 },
+          { value: "50 ml", price: 180 },
+          { value: "100 ml", price: 220 },
+        ],
+      },
     ],
   },
   {
