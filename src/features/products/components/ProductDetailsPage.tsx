@@ -36,10 +36,17 @@ export function ProductDetailsPage({
 
   const resolvedOptions = useMemo(() => {
     if (!product) return selectedOptions;
+
+    if (product.options.length === 0) {
+      return {
+        size: selectedOptions.size ?? "30 ml",
+      };
+    }
+
     return Object.fromEntries(
       product.options.map((option) => [
         option.id,
-        selectedOptions[option.id] ?? option.values[0],
+        selectedOptions[option.id] ?? option.values[0].value,
       ]),
     );
   }, [product, selectedOptions]);
@@ -61,21 +68,31 @@ export function ProductDetailsPage({
 
   return (
     <>
-      <section className="mx-auto max-w-[1440px] px-8 pb-16 lg:px-20">
+      <section className="mx-auto max-w-[1220px] px-8 pb-16 pt-4 lg:px-12">
         <ProductBreadcrumbs />
-        <div className="grid gap-8 lg:grid-cols-[1fr_0.86fr] lg:gap-12">
-          <ProductImages product={product} />
+        <div className="grid gap-6 pt-3 lg:grid-cols-[1.08fr_0.92fr] lg:gap-8">
+          {/* Image Column - Made sticky on large screens */}
+          <div className="max-w-[620px] lg:sticky lg:top-6 lg:self-start">
+            <ProductImages product={product} />
+          </div>
+
+          {/* Details Column */}
           <div className="pt-1">
-            <div className="flex gap-5 border-b border-[#e5e0d8] pb-5">
-              <span className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#1a1a1a]">
+            {/* Scent Family / Occasion Bar */}
+            <div className="flex gap-5 border-b border-[#e5e0d8] pb-4 text-[9px] font-semibold uppercase tracking-[0.16em]">
+              <span className="text-[#1a1a1a]">
                 Scent family: {product.scentFamily}
               </span>
-              <span className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#aaa69e]">
-                Occasion: Everyday
-              </span>
+              <span className="text-[#aaa69e]">Occasion: Everyday</span>
             </div>
-            <ProductDetails product={product} />
-            <div className="mt-4">
+
+            {/* Product Title & Price */}
+            <div className="pt-5">
+              <ProductDetails product={product} />
+            </div>
+
+            {/* Volume Options - Increased spacing from price */}
+            <div className="mt-7">
               <ProductOptions
                 product={product}
                 selectedOptions={resolvedOptions}
@@ -87,39 +104,55 @@ export function ProductDetailsPage({
                 }
               />
             </div>
-            <label className="mt-3 flex cursor-pointer items-center justify-between border border-[#e5e0d8] bg-[#f5f1ea] px-4 py-3">
+
+            {/* Gift Wrapping Toggle - Increased spacing */}
+            <label className="mt-5 flex cursor-pointer items-center justify-between border border-[#e5e0d8] bg-[#f5f1ea] px-4 py-3">
               <span>
-                <span className="block text-[9px] font-semibold">
+                <span className="block text-[9px] font-semibold uppercase tracking-[0.02em] text-[#1a1a1a]">
                   Complimentary Signature Gift Wrapping
                 </span>
                 <span className="mt-1 block text-[8px] text-[#77716a]">
                   Wrapped in our signature cloth with a handwritten note.
                 </span>
               </span>
-              <input
-                type="checkbox"
-                checked={giftWrap}
-                onChange={(event) => setGiftWrap(event.target.checked)}
-                className="size-4 accent-[#c5a880]"
-                aria-label="Add complimentary gift wrapping"
-              />
+
+              {/* Toggle Switch */}
+              <span className="relative inline-flex h-6 w-11 items-center">
+                <input
+                  type="checkbox"
+                  checked={giftWrap}
+                  onChange={(event) => setGiftWrap(event.target.checked)}
+                  className="peer sr-only"
+                  aria-label="Add complimentary gift wrapping"
+                />
+
+                {/* Background - changes color based on state */}
+                <span className="flex h-6 w-11 items-center rounded-[100px] border border-[#e5e0d8] bg-[#e5e0d8] p-0.5 transition-colors peer-checked:border-[#C5A880] peer-checked:bg-[#C5A880]" />
+
+                {/* Knob - moves based on state */}
+                <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5" />
+              </span>
             </label>
-            <div className="mt-3 flex h-9 gap-3">
-              <div className="flex items-center border border-[#e5e0d8] px-3 text-[10px]">
+
+            {/* Quantity & Add to Cart - Increased spacing */}
+            <div className="mt-5 flex h-10 gap-3">
+              <div className="flex items-center justify-between border border-[#e5e0d8] bg-[#f8f5f1] px-3 text-[10px] text-[#1a1a1a]">
                 <button
                   type="button"
                   onClick={() =>
                     setQuantity((current) => Math.max(1, current - 1))
                   }
                   aria-label="Decrease quantity"
+                  className="px-1 text-base leading-none"
                 >
                   −
                 </button>
-                <span className="px-4">{quantity}</span>
+                <span className="min-w-4 text-center">{quantity}</span>
                 <button
                   type="button"
                   onClick={() => setQuantity((current) => current + 1)}
                   aria-label="Increase quantity"
+                  className="px-1 text-base leading-none"
                 >
                   +
                 </button>
@@ -133,36 +166,46 @@ export function ProductDetailsPage({
                 })}
               </div>
             </div>
-            <div className="mt-7 border-b border-[#e5e0d8] pb-5">
-              <h2 className="font-[family-name:var(--font-instrument-serif)] text-2xl">
+
+            {/* Scent Anatomy - Increased spacing from Add to Cart */}
+            <div className="mt-10 border-b border-[#e5e0d8] pb-6">
+              <h2 className="font-(family-name:--font-instrument-serif) text-[32px] leading-none text-[#1a1a1a]">
                 Scent Anatomy
               </h2>
-              <p className="mt-3 max-w-xl text-[9px] leading-4 text-[#77716a]">
+              <p className="mt-4 max-w-xl text-[10px] leading-5 text-[#77716a]">
                 {product.description} The scent evolves with a warm, luminous
                 trail that opens with bright top notes, settling into a rich
                 dry-down.
               </p>
-              <dl className="mt-5 space-y-2 text-[8px] uppercase tracking-[0.08em]">
-                <div className="flex justify-between border-b border-[#eeeae4] pb-2">
+              <dl className="mt-6 space-y-3 text-[9px] uppercase tracking-[0.08em] text-[#1a1a1a]">
+                <div className="flex justify-between border-b border-[#eeeae4] pb-3">
                   <dt>Top notes</dt>
-                  <dd className="text-[#77716a]">Bergamot, Pink Pepper</dd>
+                  <dd className="text-right text-[#77716a]">
+                    Bergamot, Pink Pepper
+                  </dd>
                 </div>
-                <div className="flex justify-between border-b border-[#eeeae4] pb-2">
+                <div className="flex justify-between border-b border-[#eeeae4] pb-3">
                   <dt>Heart notes</dt>
-                  <dd className="text-[#77716a]">Cardamom, Sandalwood</dd>
+                  <dd className="text-right text-[#77716a]">
+                    Cardamom, Sandalwood
+                  </dd>
                 </div>
                 <div className="flex justify-between">
                   <dt>Base notes</dt>
-                  <dd className="text-[#77716a]">Musk, Cedarwood, Tonka</dd>
+                  <dd className="text-right text-[#77716a]">
+                    Musk, Cedarwood, Tonka
+                  </dd>
                 </div>
               </dl>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Olfactory Companions Section */}
       <section className="bg-[#f3efe8] px-8 py-12 lg:px-20">
-        <div className="mx-auto max-w-[1360px]">
-          <h2 className="text-center font-[family-name:var(--font-instrument-serif)] text-3xl">
+        <div className="mx-auto max-w-[1180px]">
+          <h2 className="text-center font-(family-name:--font-instrument-serif) text-[40px] leading-none text-[#1a1a1a]">
             Olfactory Companions
           </h2>
           <p className="mt-2 text-center text-[8px] uppercase tracking-[0.12em] text-[#aaa69e]">

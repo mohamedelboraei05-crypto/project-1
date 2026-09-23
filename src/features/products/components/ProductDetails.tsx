@@ -8,19 +8,19 @@ type ProductDetailsProps = {
 /** US-04: product information. */
 export function ProductDetails({ product }: ProductDetailsProps) {
   return (
-    <div className="border-b border-[#dedbd5] pb-5">
-      <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[#77716a]">
-        {product.category}
-      </p>
-      <h1 className="mt-3 font-[family-name:var(--font-instrument-serif)] text-4xl leading-none text-[#1a1a1a] sm:text-5xl">
+    <div className="border-b border-[#e5e0d8] pb-5">
+      <h1 className="font-(family-name:--font-instrument-serif) text-[42px] leading-[0.95] tracking-[-0.04em] text-[#1a1a1a] sm:text-[54px]">
         {product.name}
       </h1>
-      <p className="mt-3 text-sm text-[#1a1a1a]">
-        {formatPrice(product.price)}
-      </p>
-      <p className="mt-4 max-w-lg text-[10px] leading-5 text-[#605a54]">
-        {product.description}
-      </p>
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <p className="text-[24px] leading-none text-[#1a1a1a]">
+          {formatPrice(product.price)}
+        </p>
+        <span className="inline-flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.08em] text-[#2d9d73]">
+          <span className="h-2.5 w-2.5 rounded-full bg-[#2d9d73]" aria-hidden="true" />
+          Available in Atelier
+        </span>
+      </div>
     </div>
   );
 }

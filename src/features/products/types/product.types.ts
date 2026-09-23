@@ -1,9 +1,13 @@
 export type ProductId = string;
+export type ProductOptionValue = {
+  value: string;
+  price: number;
+};
 
 export type ProductOption = {
   id: string;
   name: string;
-  values: string[];
+  values: ProductOptionValue[];
 };
 
 export type Product = {
